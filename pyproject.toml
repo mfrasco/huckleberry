@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "huckleberry"
+version = "0.1.0"
+description = "Guess the secret object."
+authors = ["mfrasco <mfrasco6@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Flask = "^3.0.3"
+Flask-Login = "^0.6.3"
+Flask-Bcrypt = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.3"
+pytest = "^8.3.2"
+coverage = "^7.6.1"
+
+[tool.ruff.lint]
+extend-select = [
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["flaskr"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
