@@ -30,9 +30,9 @@ def create_app(test_config=None):
         """Show the welcome page."""
         return render_template("layout.html")
 
-    # from . import db
+    from . import db
 
-    # db.init_app(app)
+    db.init_app(app)
 
     # from . import auth
 
