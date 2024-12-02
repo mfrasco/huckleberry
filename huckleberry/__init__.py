@@ -28,7 +28,7 @@ def create_app(test_config=None):
     @app.route("/")
     def show_welcome():
         """Show the welcome page."""
-        return render_template("layout.html")
+        return render_template("welcome.html")
 
     from . import db
 
