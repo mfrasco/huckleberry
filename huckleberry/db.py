@@ -6,7 +6,11 @@ from flask import current_app, g
 
 
 def connect_db():
-    """Connects to the specific database."""
+    """Connects to the specific database.
+    
+    This function can be used for debugging purposes,
+    when you want to query the database without operating in the context of the flask app.
+    """
     rv = sqlite3.connect("instance/huckleberry.sqlite")
     rv.row_factory = sqlite3.Row
     return rv
