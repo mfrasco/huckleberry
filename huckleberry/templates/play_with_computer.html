@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div>
+        <h1 id="welcome_title">Huckleberry</h1>
+        <h2>The computer will provide clues. Try to guess the secret object.</h2>
+        {% for clue in clues %}
+          <h3>object={{clue.clue_object}}, attribute={{clue.attribute}}</h3>
+        {% endfor %}
+    </div>
+{% endblock %}

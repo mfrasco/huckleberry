@@ -12,5 +12,10 @@ insert into static_clues (secret_object_id, secret_object_name, clue_object, att
     (1, 'huckleberry', 'baseball', 'shape', 1),
     (1, 'huckleberry', 'dime', 'size', 2),
     (1, 'huckleberry', 'banana', 'category', 3),
-    (1, 'huckleberry', 'sky', 'color', 4);
+    (1, 'huckleberry', 'sky', 'color', 4),
+    (2, 'pencil', 'piece of paper', 'category', 1),
+    (2, 'pencil', 'school bus', 'color', 2),
+    (2, 'pencil', 'knife', 'size', 3),
+    (2, 'pencil', 'pool noodle', 'shape', 4)
+    ;
 

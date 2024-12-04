@@ -2,6 +2,9 @@
 {% block body %}
     <div>
         <h1 id="welcome_title">Huckleberry</h1>
+        <form id="back_to_login" action="{{ url_for('game.show_play_with_computer') }}">
+          <input class="submit_button" type="submit" value="Play With Computer">
+      </form>
     </div>
     
 {% endblock %}

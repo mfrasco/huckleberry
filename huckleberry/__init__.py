@@ -38,8 +38,8 @@ def create_app(test_config=None):
 
     # app.register_blueprint(auth.bp)
 
-    # from . import game
+    from . import game
 
-    # app.register_blueprint(game.bp)
+    app.register_blueprint(game.bp)
 
     return app
