@@ -32,8 +32,8 @@ def get_object_clues(secret_object_id):
 
 
 @bp.route("/play")
-def show_play_with_computer():
+def show_computer_gives_clues_human_guesses():
     """Show the page to play with computer."""
     secret_object_id = get_random_object_id()
     clues = get_object_clues(secret_object_id=secret_object_id)
-    return render_template("play_with_computer.html", clues=clues)
+    return render_template("computer_gives_clues_human_guesses.html", clues=clues)
