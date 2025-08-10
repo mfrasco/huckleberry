@@ -1,10 +1,109 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div>
-        <h1 id="welcome_title">Huckleberry</h1>
-        <h2>The computer will provide clues. Try to guess the secret object.</h2>
-        {% for clue in clues %}
-          <h3>object={{clue.clue_object}}, attribute={{clue.attribute}}</h3>
-        {% endfor %}
+    <div class="game-container">
+        <h1 class="game-title">Huckleberry</h1>
+        
+        <div class="game-status">
+            {% if game_over %}
+                <h2 class="game-result">
+                    {% if won %}
+                        🎉 Congratulations! You guessed it!
+                    {% else %}
+                        😞 Game Over! The secret object was: {{ secret_object_name }}
+                    {% endif %}
+                    <p>The attributes for the clued objects were:</p>
+                    <ul class="attributes-list">
+                        {% for clue in clues %}
+                            <li><strong>{{ clue.object_name }}</strong> shares {{ clue.attribute }} with the secret object</li>
+                        {% endfor %}
+                    </ul>
+                </h2>
+                <a href="{{ url_for('game.new_game') }}" class="play-again-btn">Play Again</a>
+            {% else %}
+                <div class="clue-section">
+                    <h2>Clue Number {{ current_clue_number }}</h2>
+                    
+                    {% if current_clue_number < 5 %}
+                      <div class="clue-object">{{ current_clue_object }}</div>
+                    {% else %}
+                      <div class="clue-object">{{ current_clue_object }} shares {{ current_clue_attribute }} with the secret object</div>
+                    {% endif %}
+                </div>
+
+                <div class="guess-section">
+                    <div class="game-controls">
+                        <div class="left-control">
+                            <form method="POST" action="{{ url_for('game.submit_guess') }}" class="guess-form">
+                                <input type="hidden" name="secret_object_id" value="{{ secret_object_id }}">
+                                <input type="hidden" name="current_clue_number" value="{{ current_clue_number }}">
+                                <input type="text" id="guess" name="guess" placeholder="What do you think the secret object is?" required>
+                                <button type="submit">Submit Guess</button>
+                            </form>
+                        </div>
+                        <div class="right-control">
+                            {% if current_clue_number < 4 %}
+                                <form method="POST" action="{{ url_for('game.next_clue') }}" class="next-clue-form">
+                                    <input type="hidden" name="secret_object_id" value="{{ secret_object_id }}">
+                                    <input type="hidden" name="current_clue_number" value="{{ current_clue_number }}">
+                                    <button type="submit" class="next-clue-btn">Receive Next Clue</button>
+                                </form>
+                            {% elif current_clue_number < 8 %}
+                                <form method="POST" action="{{ url_for('game.reveal_attribute') }}" class="reveal-attribute-form">
+                                    <input type="hidden" name="secret_object_id" value="{{ secret_object_id }}">
+                                    <input type="hidden" name="current_clue_number" value="{{ current_clue_number }}">
+                                    <select id="clue_object_select" name="clue_object" required>
+                                        <option value="">Select a clue object</option>
+                                        {% for clue in clues %}
+                                            {% if not clue.is_attribute_revealed %}
+                                                <option value="{{ clue.object_name }}">{{ clue.object_name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="reveal-attribute-btn">Reveal Attribute</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('game.end_game') }}" class="end-game-form">
+                        <button type="submit" class="end-game-btn">Give Up</button>
+                    </form>
+                </div>
+
+                {% if previous_guesses %}
+                    <div class="previous-guesses">
+                        <h3>Your previous guesses:</h3>
+                        <ul>
+                            {% for guess in previous_guesses %}
+                                <li>{{ guess }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                
+                {% if current_clue_number > 1 %}
+                    <div class="previous-clues">
+                        <h3>Previous clues:</h3>
+                        <ul>
+                            {% for clue in clues %}
+                                {% if clue.clue_number < current_clue_number %}
+                                    <li>
+                                        {% if clue.is_attribute_revealed and clue.object_name != current_clue_object %}
+                                            {{ clue.object_name }} shares {{ clue.attribute }} with the secret object
+                                        {% else %}
+                                            {{ clue.object_name }}
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="game-navigation">
+            <a href="{{ url_for('show_welcome') }}" class="home-btn">Home</a>
+        </div>
     </div>
 {% endblock %}

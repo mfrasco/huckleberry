@@ -30,7 +30,7 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["flaskr"]
+source = ["huckleberry"]
 
 [build-system]
 requires = ["poetry-core"]
