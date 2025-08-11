@@ -1,5 +1,6 @@
 """Database module."""
 import sqlite3
+import os
 
 import click
 from flask import current_app, g
@@ -19,10 +20,16 @@ def connect_db():
 def get_db():
     """Get database connection."""
     if "db" not in g:
-        g.db = sqlite3.connect(
-            current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
+        if current_app.config.get("IS_POSTGRESQL"):
+            import psycopg2
+            import psycopg2.extras
+            g.db = psycopg2.connect(current_app.config["DATABASE"])
+            # We'll handle cursor creation when needed
+        else:
+            g.db = sqlite3.connect(
+                current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
+            )
+            g.db.row_factory = sqlite3.Row
 
     return g.db
 
@@ -37,8 +44,17 @@ def close_db(e=None):
 def init_db():
     """Initialize database."""
     db = get_db()
-    with current_app.open_resource("schema.sql") as f:
-        db.executescript(f.read().decode("utf8"))
+    
+    if current_app.config.get("IS_POSTGRESQL"):
+        # For PostgreSQL, use schema_postgresql.sql
+        with current_app.open_resource("schema_postgresql.sql") as f:
+            cursor = db.cursor()
+            cursor.execute(f.read().decode("utf8"))
+            db.commit()
+    else:
+        # For SQLite, use the regular schema
+        with current_app.open_resource("schema.sql") as f:
+            db.executescript(f.read().decode("utf8"))
 
 
 @click.command("init-db")
