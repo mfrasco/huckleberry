@@ -58,7 +58,8 @@ def start_new_game():
         'current_clue_number': 0,
         'previous_guesses': [],
         'game_over': False,
-        'won': False
+        'won': False,
+        'show_guess_feedback': False
     }
 
 
@@ -92,6 +93,13 @@ def show_computer_gives_clues_human_guesses():
             if current_clue_object == clue['object_name']:
                 current_clue_attribute = clue['attribute']
     
+    # Generate feedback message if needed
+    guess_feedback = None
+    if game_state.get('show_guess_feedback', False) and game_state['previous_guesses']:
+        last_guess = game_state['previous_guesses'][-1]
+        # This can be enhanced later with more intelligent responses
+        guess_feedback = f"No, the secret object isn't {last_guess}."
+    
     return render_template(
         "computer_gives_clues_human_guesses.html",
         game_over=False,
@@ -100,7 +108,8 @@ def show_computer_gives_clues_human_guesses():
         current_clue_number=current_clue_idx + 1,
         secret_object_id=game_state['secret_object_id'],
         previous_guesses=game_state['previous_guesses'],
-        clues=game_state['clues']
+        clues=game_state['clues'],
+        guess_feedback=guess_feedback
     )
 
 
@@ -122,6 +131,10 @@ def submit_guess():
     if is_correct_guess(guess, game_state['secret_object_name']):
         game_state['game_over'] = True
         game_state['won'] = True
+        game_state['show_guess_feedback'] = False
+    else:
+        # Show feedback for incorrect guess
+        game_state['show_guess_feedback'] = True
     
     session['game_state'] = game_state
     return redirect(url_for('game.show_computer_gives_clues_human_guesses'))
@@ -135,6 +148,8 @@ def next_clue():
     
     game_state = session['game_state']
     game_state['current_clue_number'] += 1
+    # Clear feedback when moving to next clue
+    game_state['show_guess_feedback'] = False
 
     session['game_state'] = game_state
     return redirect(url_for('game.show_computer_gives_clues_human_guesses'))

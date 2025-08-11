@@ -1,10 +1,83 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div>
+    <div class="welcome-container">
         <h1 id="welcome_title">Huckleberry</h1>
-        <form id="back_to_login" action="{{ url_for('game.show_computer_gives_clues_human_guesses') }}">
-          <input class="submit_button" type="submit" value="Play With Computer">
-      </form>
+        <p class="welcome-subtitle">A game of creativity and deduction</p>
+        
+        <div class="play-options">
+            <a href="{{ url_for('game.show_computer_gives_clues_human_guesses') }}" class="play-button computer-play">
+                <span class="play-icon">🤖</span>
+                <span class="play-text">Computer Gives Clues</span>
+                <span class="play-description">Computer gives clues, you guess</span>
+            </a>
+            
+            <button class="play-button disabled" disabled>
+                <span class="play-icon">🧠</span>
+                <span class="play-text">You Give Clues</span>
+                <span class="play-description">You give clues, computer guesses<br>Coming Soon</span>
+            </button>
+            
+            <button class="play-button disabled" disabled>
+                <span class="play-icon">👥</span>
+                <span class="play-text">Play With Friends</span>
+                <span class="play-description">Human gives clues, humans guess<br>Coming Soon</span>
+            </button>
+        </div>
+        
+        <div class="rules-section">
+            <h2 class="rules-title">How to Play</h2>
+            
+            <div class="rules-content">
+                <div class="rule-card">
+                    <span class="rule-number">1</span>
+                    <h3>The Setup</h3>
+                    <p>One player thinks of a secret object and gives clues to the other players to help them guess what the secret object is.</p>
+                </div>
+                
+                <div class="rule-card">
+                    <span class="rule-number">2</span>
+                    <h3>The Clues</h3>
+                    <p>Each clue object must share at least one attribute with the secret object. The attributes are <strong>shape</strong>, <strong>size</strong>, <strong>color</strong>, and <strong>category</strong>.</p>
+                </div>
+                
+                <div class="rule-card">
+                    <span class="rule-number">3</span>
+                    <h3>Take a Guess</h3>
+                    <p>After each clue, don't be afraid to guess! Each new clue object must share a new attribute with the secret object.</p>
+                </div>
+                
+            </div>
+            
+            <div class="example-section">
+                <h3 class="example-title">Example Game</h3>
+                <p class="example-text">
+                    Secret object: <strong>pencil</strong><br>
+                    Clue 1: <strong>school bus</strong> - A pencil and a school bus share the same color.
+                    However, the guessers don't know what attribute a school bus shares with the secret object. From their perspective,
+                    the secret object could be a loaf of bread (shape), an elephant (size), a limousine (category).
+                    <br>
+                    <br>
+                    Clue 2: <strong>piece of paper</strong> - A pencil and a piece of paper are both in the same category. From the
+                    guesser's perspective, there are lots of different combinations of what the secret object could be.
+                    It could be a white vehicle. Or, it could be a massive blanket (same size as a school bus and same shape as a piece of paper).
+                    <br>
+                    <br>
+                    Clue 3: <strong>knife</strong> - A pencil and a knife are the same size. There are so many possibilities for the
+                    secret object. It could be a yellow, rectangular kitchen utensil!
+                    <br>
+                    <br>
+                    Clue 4: <strong>pool noodle</strong> - A pencil and a pool noodle are the same shape. Notice that each clue object shared
+                    a different attribute with the secret object.
+                </p>
+            </div>
+            
+            <div class="spirit-section">
+                <h3 class="spirit-title">Remember</h3>
+                <p class="spirit-text">
+                    Be creative! There's flexibility in how attributes match. A potato and a baseball might be similar sizes to one person but different to another. The fun is in thinking creatively!
+                </p>
+            </div>
+        </div>
     </div>
     
 {% endblock %}

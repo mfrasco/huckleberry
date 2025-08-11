@@ -11,10 +11,9 @@
                     {% else %}
                         😞 Game Over! The secret object was: {{ secret_object_name }}
                     {% endif %}
-                    <p>The attributes for the clued objects were:</p>
                     <ul class="attributes-list">
                         {% for clue in clues %}
-                            <li><strong>{{ clue.object_name }}</strong> shares {{ clue.attribute }} with the secret object</li>
+                            <li>{{ clue.object_name }} is the same {{ clue.attribute }} as {{ secret_object_name }}</li>
                         {% endfor %}
                     </ul>
                 </h2>
@@ -36,7 +35,7 @@
                             <form method="POST" action="{{ url_for('game.submit_guess') }}" class="guess-form">
                                 <input type="hidden" name="secret_object_id" value="{{ secret_object_id }}">
                                 <input type="hidden" name="current_clue_number" value="{{ current_clue_number }}">
-                                <input type="text" id="guess" name="guess" placeholder="What do you think the secret object is?" required>
+                                <input type="text" id="guess" name="guess" placeholder="What is the secret object?" required>
                                 <button type="submit">Submit Guess</button>
                             </form>
                         </div>
@@ -65,19 +64,17 @@
                         </div>
                     </div>
                     
-                    <form method="POST" action="{{ url_for('game.end_game') }}" class="end-game-form">
-                        <button type="submit" class="end-game-btn">Give Up</button>
-                    </form>
+                    <div class="game-action-buttons">
+                        <form method="POST" action="{{ url_for('game.end_game') }}" class="end-game-form">
+                            <button type="submit" class="end-game-btn">Give Up</button>
+                        </form>
+                        <a href="{{ url_for('game.new_game') }}" class="new-game-btn">New Game</a>
+                    </div>
                 </div>
 
-                {% if previous_guesses %}
-                    <div class="previous-guesses">
-                        <h3>Your previous guesses:</h3>
-                        <ul>
-                            {% for guess in previous_guesses %}
-                                <li>{{ guess }}</li>
-                            {% endfor %}
-                        </ul>
+                {% if guess_feedback %}
+                    <div class="guess-feedback">
+                        <p>{{ guess_feedback }}</p>
                     </div>
                 {% endif %}
                 
@@ -95,6 +92,17 @@
                                         {% endif %}
                                     </li>
                                 {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if previous_guesses %}
+                    <div class="previous-guesses">
+                        <h3>Your previous guesses:</h3>
+                        <ul>
+                            {% for guess in previous_guesses %}
+                                <li>{{ guess }}</li>
                             {% endfor %}
                         </ul>
                     </div>
