@@ -26,10 +26,31 @@ There are three ways to play.
 
 ## Developer Guide
 
-Initialize the database: `flask --app huckleberry init-db-sqlite` or `flask --app huckleberry init-db-postgresql`
+### Prerequisites
+- PostgreSQL installed locally
+- Python 3.11+
 
-Run the app in debug mode: `flask --app huckleberry run --debug`
+### Setup
+1. Create a PostgreSQL database:
+   ```bash
+   createdb huckleberry
+   ```
 
-Run the tests: `pytest`
+2. Install dependencies:
+   ```bash
+   poetry install
+   ```
 
-Measure code coverage: `coverage run -m pytest`
+3. Initialize the database:
+   ```bash
+   flask --app huckleberry init-db
+   ```
+
+4. Run the app in debug mode:
+   ```bash
+   flask --app huckleberry run --debug
+   ```
+
+### Testing
+- Run tests: `pytest`
+- Measure code coverage: `coverage run -m pytest`
