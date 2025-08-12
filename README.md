@@ -26,7 +26,7 @@ There are three ways to play.
 
 ## Developer Guide
 
-Initialize the database: `flask --app huckleberry init-db`
+Initialize the database: `flask --app huckleberry init-db-sqlite` or `flask --app huckleberry init-db-postgresql`
 
 Run the app in debug mode: `flask --app huckleberry run --debug`
 

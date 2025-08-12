@@ -41,30 +41,40 @@ def close_db(e=None):
         db.close()
 
 
-def init_db():
+def init_db_postgresql():
     """Initialize database."""
     db = get_db()
-    
-    if current_app.config.get("IS_POSTGRESQL"):
-        # For PostgreSQL, use schema_postgresql.sql
-        with current_app.open_resource("schema_postgresql.sql") as f:
-            cursor = db.cursor()
-            cursor.execute(f.read().decode("utf8"))
-            db.commit()
-    else:
-        # For SQLite, use the regular schema
-        with current_app.open_resource("schema.sql") as f:
-            db.executescript(f.read().decode("utf8"))
+    with current_app.open_resource("schema_postgresql.sql") as f:
+        cursor = db.cursor()
+        cursor.execute(f.read().decode("utf8"))
+        db.commit()
 
 
-@click.command("init-db")
-def init_db_command():
+def init_db_sqlite():
+    """Initialize database."""
+    db = get_db()
+    with current_app.open_resource("schema_sqlite.sql") as f:
+        db.executescript(f.read().decode("utf8"))
+
+
+@click.command("init-db-postgresql")
+def init_db_postgresql_command():
     """Clear the existing data and create new tables."""
-    init_db()
+    init_db_postgresql()
+    click.echo("Initialized the database.")
+
+
+@click.command("init-db-sqlite")
+def init_db_sqlite_command():
+    """Clear the existing data and create new tables."""
+    init_db_sqlite()
     click.echo("Initialized the database.")
 
 
 def init_app(app):
     """Initialize the app."""
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    if app.config.get("IS_POSTGRESQL"):
+        app.cli.add_command(init_db_postgresql_command)
+    else:
+        app.cli.add_command(init_db_sqlite_command)
