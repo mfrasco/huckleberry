@@ -1,10 +1,12 @@
 """Entry point for the application."""
 import os
 from dotenv import load_dotenv
-from huckleberry import create_app
 
-# Load environment variables from .env file if it exists
+# Load environment variables from .env file if it exists (for local dev)
 load_dotenv()
+
+# Import create_app after loading environment variables
+from huckleberry import create_app
 
 app = create_app()
 
