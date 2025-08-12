@@ -59,14 +59,14 @@ def init_db_sqlite():
 
 @click.command("init-db-postgresql")
 def init_db_postgresql_command():
-    """Clear the existing data and create new tables."""
+    """Clear the existing data and create new postgresql tables."""
     init_db_postgresql()
     click.echo("Initialized the database.")
 
 
 @click.command("init-db-sqlite")
 def init_db_sqlite_command():
-    """Clear the existing data and create new tables."""
+    """Clear the existing data and create new sqlite tables."""
     init_db_sqlite()
     click.echo("Initialized the database.")
 
@@ -74,7 +74,5 @@ def init_db_sqlite_command():
 def init_app(app):
     """Initialize the app."""
     app.teardown_appcontext(close_db)
-    if app.config.get("IS_POSTGRESQL"):
-        app.cli.add_command(init_db_postgresql_command)
-    else:
-        app.cli.add_command(init_db_sqlite_command)
+    app.cli.add_command(init_db_postgresql_command)
+    app.cli.add_command(init_db_sqlite_command)
