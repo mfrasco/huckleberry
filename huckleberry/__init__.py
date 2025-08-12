@@ -17,8 +17,6 @@ def create_app(test_config=None):
         # Fix for Render's URL format
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
 
-    print(f"secret key is {os.environ.get('SECRET_KEY', 'dev')}")
-
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY', 'dev'),
         DATABASE=database_url,
